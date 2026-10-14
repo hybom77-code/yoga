@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ananta · Portal de Bienestar</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --bg: #13101f;
+  --bg2: #1a1530;
+  --card: rgba(255,255,255,0.03);
+  --border: rgba(127,119,221,0.22);
+  --border2: rgba(127,119,221,0.4);
+  --accent: #7f77dd;
+  --accent2: #b87fcf;
+  --gold: #c9a96e;
+  --text: #e8e0d0;
+  --text2: #9b8fb0;
+  --text3: #6b5a8a;
+  --purple-soft: rgba(127,119,221,0.15);
+}
+
+html,body { height:100%; }
+body {
+  font-family:'Cormorant Garamond',Georgia,serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── STARFIELD ── */
+.stars {
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(127,119,221,0.15) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 75%, rgba(180,140,220,0.1) 0%, transparent 55%),
+    radial-gradient(ellipse at 55% 50%, rgba(200,160,100,0.04) 0%, transparent 60%),
+    var(--bg);
+}
+.stars::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    radial-gradient(1px 1px at 8% 12%, rgba(255,255,255,0.65) 0%,transparent 100%),
+    radial-gradient(1px 1px at 25% 42%, rgba(255,255,255,0.4) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 48% 8%, rgba(255,255,255,0.7) 0%,transparent 100%),
+    radial-gradient(1px 1px at 68% 58%, rgba(255,255,255,0.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 83% 22%, rgba(255,255,255,0.6) 0%,transparent 100%),
+    radial-gradient(1px 1px at 14% 73%, rgba(255,255,255,0.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 57% 78%, rgba(255,255,255,0.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 38% 88%, rgba(255,255,255,0.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 91% 48%, rgba(255,255,255,0.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 4%  52%, rgba(255,255,255,0.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 72% 35%, rgba(255,255,255,0.35) 0%,transparent 100%),
+    radial-gradient(1px 1px at 33% 65%, rgba(255,255,255,0.45) 0%,transparent 100%);
+  animation:twinkle 8s ease-in-out infinite alternate;
+}
+@keyframes twinkle{0%{opacity:.7}100%{opacity:1}}
+
+/* ── LAYOUT ── */
+.wrap { position:relative;z-index:1;max-width:480px;margin:0 auto;padding:0 1.2rem 6rem; }
+
+/* ── HOME ── */
+#screen-home { padding-top:2.5rem; }
+.home-header { text-align:center;margin-bottom:2.5rem; }
+.mandala-wrap { width:80px;height:80px;margin:0 auto 1.2rem;animation:spin 50s linear infinite; }
+.mandala-wrap svg { width:100%;height:100%; }
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.app-title {
+  font-family:'Cinzel',serif;font-size:22px;
+  letter-spacing:.2em;color:var(--text);
+  text-transform:uppercase;margin-bottom:.3rem;
+}
+.app-sub { font-size:15px;color:var(--text2);font-style:italic; }
+
+.moon-bar {
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(201,169,110,0.1);border:0.5px solid rgba(201,169,110,0.3);
+  border-radius:20px;padding:.35rem .9rem;margin-top:.8rem;
+  font-size:13px;color:var(--gold);letter-spacing:.04em;
+}
+
+.sep {
+  display:flex;align-items:center;gap:10px;
+  margin:1.4rem 0;color:var(--text3);font-size:12px;letter-spacing:.2em;
+}
+.sep::before,.sep::after{content:'';flex:1;height:.5px;background:linear-gradient(90deg,transparent,var(--text3),transparent)}
+
+/* ── MODULE GRID ── */
+.module-grid { display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.5rem; }
+.mod-card {
+  background:var(--card);
+  border:0.5px solid var(--border);
+  border-radius:18px;padding:1.3rem 1rem 1.1rem;
+  cursor:pointer;transition:all .25s;text-align:center;
+  position:relative;overflow:hidden;
+}
+.mod-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 0%, rgba(127,119,221,0.1) 0%, transparent 70%);
+  opacity:0;transition:opacity .25s;
+}
+.mod-card:hover{border-color:var(--border2);transform:translateY(-2px);}
+.mod-card:hover::before{opacity:1;}
+.mod-icon { font-size:2rem;margin-bottom:.5rem;display:block; }
+.mod-name {
+  font-family:'Cinzel',serif;font-size:11px;
+  letter-spacing:.15em;color:var(--text);text-transform:uppercase;
+  margin-bottom:.25rem;
+}
+.mod-desc { font-size:12px;color:var(--text2);font-style:italic;line-height:1.4; }
+
+/* ── BACK BUTTON ── */
+.back-btn {
+  display:inline-flex;align-items:center;gap:6px;
+  background:transparent;border:0.5px solid var(--border);
+  border-radius:20px;padding:.4rem .9rem;
+  color:var(--text2);font-family:'Cormorant Garamond',serif;
+  font-size:13px;cursor:pointer;transition:all .2s;
+  margin-bottom:1.5rem;margin-top:1.5rem;
+}
+.back-btn:hover{border-color:var(--accent);color:var(--text);}
+
+/* ── SCREEN GENERIC ── */
+.screen{display:none;}
+.screen.active{display:block;}
+
+/* ── CARDS ── */
+.card {
+  background:var(--card);border:0.5px solid var(--border);
+  border-radius:16px;padding:1.5rem;margin-bottom:1rem;
+  backdrop-filter:blur(8px);
+}
+
+.section-lbl {
+  font-family:'Cinzel',serif;font-size:9px;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--text3);margin-bottom:.7rem;display:block;
+}
+
+/* ── SELECTOR GRID (yoga) ── */
+.sel-grid { display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.3rem; }
+.sel-chip {
+  background:rgba(255,255,255,0.03);
+  border:0.5px solid var(--border);
+  border-radius:10px;padding:.45rem .85rem;
+  color:var(--text2);font-family:'Cormorant Garamond',serif;
+  font-size:14px;cursor:pointer;transition:all .2s;
+}
+.sel-chip:hover{border-color:var(--accent);color:var(--text);}
+.sel-chip.sel{
+  background:var(--purple-soft);border-color:var(--accent);
+  color:var(--text);box-shadow:0 0 12px rgba(127,119,221,0.12);
+}
+
+/* ── MAIN BUTTON ── */
+.btn-main {
+  width:100%;padding:15px;
+  background:linear-gradient(135deg, #5a52aa, #7f77dd, #9b6dbb);
+  border:none;border-radius:12px;
+  color:#fff;font-family:'Cinzel',serif;
+  font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+  cursor:pointer;transition:opacity .2s,transform .1s;
+  box-shadow:0 4px 24px rgba(127,119,221,0.3);
+  margin-top:.5rem;
+}
+.btn-main:hover{opacity:.9;transform:translateY(-1px);}
+.btn-main:active{transform:translateY(0);}
+.btn-main:disabled{opacity:.35;cursor:default;transform:none;}
+
+.btn-secondary {
+  background:transparent;border:0.5px solid var(--border);
+  border-radius:20px;padding:.5rem 1.5rem;
+  color:var(--text2);font-family:'Cinzel',serif;
+  font-size:10px;letter-spacing:.15em;text-transform:uppercase;
+  cursor:pointer;transition:all .2s;
+}
+.btn-secondary:hover{border-color:var(--accent);color:var(--text);}
+
+/* ── LOADING ── */
+.loading-screen{text-align:center;padding:3.5rem 1rem;display:none;}
+.loading-screen.on{display:block;}
+.luna-anim{font-size:44px;display:block;margin-bottom:1rem;animation:pulsar 2s ease-in-out infinite;}
+@keyframes pulsar{0%,100%{opacity:.4;transform:scale(.95)}50%{opacity:1;transform:scale(1.05)}}
+.loading-txt{font-style:italic;color:var(--text2);font-size:17px;letter-spacing:.05em;}
+
+/* ── YOGA SEQUENCE DISPLAY ── */
+.seq-header{text-align:center;margin-bottom:1.2rem;}
+.seq-title{font-family:'Cinzel',serif;font-size:16px;letter-spacing:.12em;color:var(--text);margin-bottom:.3rem;}
+.seq-meta{font-size:13px;color:var(--text2);font-style:italic;}
+
+.phase-lbl{
+  font-family:'Cinzel',serif;font-size:9px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--text3);
+  background:rgba(127,119,221,0.08);border-radius:8px;
+  padding:.2rem .7rem;display:inline-block;margin:.8rem 0 .5rem;
+}
+
+.asana-card{
+  border:0.5px solid var(--border);border-radius:12px;
+  padding:.9rem 1rem;margin-bottom:.5rem;
+  background:rgba(255,255,255,0.02);
+}
+.asana-top{display:flex;align-items:center;gap:10px;margin-bottom:.4rem;}
+.asana-ico{font-size:1.4rem;flex-shrink:0;}
+.asana-skt{font-style:italic;color:var(--text);font-size:.9rem;}
+.asana-esp{font-size:.72rem;color:var(--text2);}
+.asana-t{font-size:.62rem;color:var(--accent);background:var(--purple-soft);border-radius:6px;padding:.1rem .4rem;margin-left:auto;white-space:nowrap;flex-shrink:0;}
+.asana-tags{display:flex;gap:5px;margin-bottom:.3rem;flex-wrap:wrap;}
+.tag{font-size:.58rem;padding:.12rem .45rem;border-radius:6px;}
+.tc{background:rgba(127,119,221,0.15);color:var(--accent);}
+.tp{background:rgba(201,169,110,0.12);color:var(--gold);}
+.breath-hint{font-size:.72rem;color:var(--text3);font-style:italic;}
+
+.affirm{
+  background:linear-gradient(135deg,rgba(127,119,221,0.08),rgba(180,127,207,0.08));
+  border:0.5px solid rgba(180,127,207,0.25);
+  border-radius:12px;padding:1.1rem;text-align:center;margin-top:.8rem;
+}
+.affirm-lbl{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);margin-bottom:.4rem;}
+.affirm-txt{font-style:italic;color:var(--text);font-size:.95rem;line-height:1.7;}
+
+/* ── TIMER ── */
+.timer-box{
+  background:var(--card);border:0.5px solid var(--border);
+  border-radius:16px;padding:1.3rem;margin-bottom:1rem;
+  position:sticky;top:.5rem;z-index:10;backdrop-filter:blur(16px);
+}
+.timer-pose{font-size:.85rem;font-style:italic;color:var(--text2);margin-bottom:.3rem;text-align:center;}
+.timer-num{font-size:2.8rem;font-weight:300;color:var(--text);text-align:center;letter-spacing:.05em;}
+.prog{height:3px;background:rgba(255,255,255,0.06);border-radius:2px;margin:.5rem 0;overflow:hidden;}
+.prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s;}
+.tctrls{display:flex;gap:.5rem;justify-content:center;margin-top:.7rem;}
+.tbtn{
+  border:0.5px solid var(--border);border-radius:10px;padding:.45rem .9rem;
+  background:transparent;cursor:pointer;font-size:.8rem;color:var(--text2);
+  font-family:'Cormorant Garamond',serif;transition:all .2s;
+}
+.tbtn:hover{border-color:var(--accent);color:var(--text);}
+.tbtn.pri{border:none;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;}
+.tcnt{font-size:.68rem;color:var(--text3);text-align:center;margin-top:.4rem;letter-spacing:.05em;}
+
+/* ── ASTRO GRID ── */
+.astro-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-bottom:.4rem;}
+.astro-grid-5{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;}
+.astro-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;}
+.abtn{
+  border:0.5px solid var(--border);border-radius:10px;
+  padding:.45rem .25rem;background:rgba(255,255,255,0.02);
+  cursor:pointer;width:100%;text-align:center;transition:all .2s;
+}
+.abtn:hover{border-color:var(--accent);}
+.abtn.active{border-color:var(--accent);background:var(--purple-soft);}
+.abtn.today-p{border-color:rgba(201,169,110,0.5);background:rgba(201,169,110,0.08);}
+.abtn .sym{font-size:1rem;display:block;line-height:1.5;}
+.abtn .nm{font-size:.55rem;color:var(--text2);display:block;line-height:1.3;}
+.today-pip{font-size:.42rem;background:var(--gold);color:#000;border-radius:4px;padding:1px 3px;display:inline-block;margin-top:1px;}
+
+/* ── BREATHWORK ── */
+.breath-wrap{position:relative;width:200px;height:200px;display:flex;align-items:center;justify-content:center;margin:0 auto;}
+.orbit{position:absolute;border-radius:50%;border:1px solid var(--accent);transition:transform .08s linear;}
+.o1{width:200px;height:200px;opacity:.1;}
+.o2{width:155px;height:155px;opacity:.18;}
+.o3{width:110px;height:110px;opacity:.3;}
+.breath-core{
+  width:76px;height:76px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #7c4dba, #2d1560);
+  border:1px solid var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;z-index:2;transition:transform .08s linear;
+}
+.phase-label{font-size:.9rem;color:var(--text2);letter-spacing:2px;text-transform:uppercase;text-align:center;}
+.phase-count{font-size:2.6rem;font-weight:200;color:var(--text);text-align:center;line-height:1;}
+.cycle-info{font-size:.72rem;color:var(--text3);letter-spacing:1px;text-align:center;}
+
+.tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+.tech-card{
+  background:rgba(255,255,255,0.02);border:0.5px solid var(--border);
+  border-radius:14px;padding:.9rem;cursor:pointer;transition:all .2s;
+}
+.tech-card:hover{border-color:var(--accent);}
+.tech-card.selected{background:var(--purple-soft);border-color:var(--accent);}
+.tech-icon{font-size:1.1rem;margin-bottom:.3rem;}
+.tech-name{font-size:.82rem;font-weight:500;color:var(--text);}
+.tech-pat{font-size:.68rem;color:var(--text2);margin-top:1px;}
+.tech-desc{font-size:.7rem;color:var(--text3);margin-top:.4rem;line-height:1.5;border-top:0.5px solid var(--border);padding-top:.4rem;}
+
+.audio-row{
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,0.02);border:0.5px solid var(--border);
+  border-radius:12px;padding:.65rem 1rem;margin-bottom:.5rem;
+}
+.toggle-track{width:38px;height:21px;background:rgba(127,119,221,0.2);border-radius:11px;position:relative;cursor:pointer;transition:background .2s;}
+.toggle-track.on{background:var(--accent);}
+.toggle-track::after{content:'';position:absolute;top:3px;left:3px;width:15px;height:15px;border-radius:50%;background:#8b6fd4;transition:left .2s;}
+.toggle-track.on::after{left:20px;background:#fff;}
+
+/* ── ORACLE ── */
+.oracle-intent{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:.3rem;}
+.int-btn{
+  padding:.7rem .5rem;background:rgba(255,255,255,0.02);
+  border:0.5px solid var(--border);border-radius:10px;
+  color:var(--text2);font-family:'Cormorant Garamond',serif;
+  font-size:13px;cursor:pointer;text-align:center;transition:all .2s;
+}
+.int-btn:hover{border-color:var(--accent);color:var(--text);}
+.int-btn.sel{background:var(--purple-soft);border-color:var(--accent);color:var(--text);}
+
+.cards-row{display:flex;gap:.8rem;justify-content:center;margin:1.2rem 0;}
+.oracle-card-slot{
+  width:90px;flex-shrink:0;
+  border:0.5px solid var(--border);border-radius:12px;
+  aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;cursor:pointer;transition:all .3s;
+  background:rgba(255,255,255,0.02);position:relative;overflow:hidden;
+}
+.oracle-card-slot.revealed{border-color:var(--accent);background:var(--purple-soft);}
+.oracle-card-slot .card-inner{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:.3rem;padding:.5rem;
+  opacity:0;transition:opacity .4s;
+}
+.oracle-card-slot.revealed .card-inner{opacity:1;}
+.oracle-card-slot .card-back{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.6rem;transition:opacity .4s;}
+.oracle-card-slot.revealed .card-back{opacity:0;}
+.card-name{font-family:'Cinzel',serif;font-size:8px;letter-spacing:.1em;text-align:center;color:var(--text);text-transform:uppercase;}
+.card-meaning{font-size:9px;color:var(--text2);text-align:center;font-style:italic;line-height:1.3;}
+
+.oracle-msg{
+  background:linear-gradient(135deg,rgba(127,119,221,0.08),rgba(180,127,207,0.06));
+  border:0.5px solid rgba(127,119,221,0.25);
+  border-radius:14px;padding:1.3rem;text-align:center;
+}
+.oracle-msg-lbl{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.2em;color:var(--text3);text-transform:uppercase;margin-bottom:.6rem;}
+.oracle-msg-txt{font-size:.95rem;color:var(--text);font-style:italic;line-height:1.8;}
+
+/* ── DONE / CIERRE ── */
+.done-glyph{width:68px;height:68px;border-radius:50%;border:0.5px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto 1rem;}
+.done-title{font-family:'Cinzel',serif;font-size:1.2rem;letter-spacing:.1em;color:var(--text);text-align:center;margin-bottom:.4rem;}
+.done-sub{font-size:.85rem;color:var(--text2);text-align:center;line-height:1.6;font-style:italic;}
+.stat-row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:1rem 0;}
+.stat-card{background:rgba(255,255,255,0.02);border:0.5px solid var(--border);border-radius:12px;padding:.9rem;text-align:center;}
+.stat-val{font-size:1.5rem;font-weight:300;color:var(--text);}
+.stat-lbl{font-size:.68rem;color:var(--text3);margin-top:2px;letter-spacing:.08em;}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;
+  background:rgba(19,16,31,0.9);border-top:0.5px solid var(--border);
+  display:flex;justify-content:space-around;padding:.6rem 0 .8rem;
+  z-index:100;backdrop-filter:blur(20px);
+}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:.3rem .8rem;border-radius:12px;transition:all .2s;}
+.nav-item:hover{background:var(--purple-soft);}
+.nav-item.active .nav-icon{opacity:1;}
+.nav-item.active .nav-lbl{color:var(--accent);}
+.nav-icon{font-size:1.2rem;opacity:.4;transition:opacity .2s;}
+.nav-item.active .nav-icon{opacity:1;}
+.nav-lbl{font-family:'Cinzel',serif;font-size:8px;letter-spacing:.12em;color:var(--text3);text-transform:uppercase;transition:color .2s;}
+
+.errmsg{background:rgba(180,60,60,0.15);border:0.5px solid rgba(180,60,60,0.4);border-radius:10px;padding:.8rem;font-size:.82rem;color:#e8a0a0;margin-bottom:.8rem;}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+
+<div class="wrap">
+
+<!-- ════════════════ HOME ════════════════ -->
+<div id="screen-home" class="screen active">
+  <div id="screen-home-inner">
+    <div class="home-header">
+      <div class="mandala-wrap">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(127,119,221,0.3)" stroke-width=".5"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(127,119,221,0.2)" stroke-width=".5"/>
+          <circle cx="50" cy="50" r="28" fill="none" stroke="rgba(201,169,110,0.25)" stroke-width=".5"/>
+          <circle cx="50" cy="50" r="4" fill="rgba(127,119,221,0.6)"/>
+          <g stroke="rgba(127,119,221,0.4)" stroke-width=".5" fill="none">
+            <line x1="50" y1="2" x2="50" y2="98"/>
+            <line x1="2" y1="50" x2="98" y2="50"/>
+            <line x1="15" y1="15" x2="85" y2="85"/>
+            <line x1="85" y1="15" x2="15" y2="85"/>
+          </g>
+          <g fill="none" stroke="rgba(201,169,110,0.35)" stroke-width=".5">
+            <polygon points="50,12 88,71 12,71"/>
+            <polygon points="50,88 12,29 88,29"/>
+          </g>
+          <g fill="rgba(127,119,221,0.5)">
+            <circle cx="50" cy="12" r="1.5"/>
+            <circle cx="88" cy="71" r="1.5"/>
+            <circle cx="12" cy="71" r="1.5"/>
+            <circle cx="50" cy="88" r="1.5"/>
+            <circle cx="88" cy="29" r="1.5"/>
+            <circle cx="12" cy="29" r="1.5"/>
+          </g>
+        </svg>
+      </div>
+      <div class="app-title">Ananta</div>
+      <div class="app-sub">tu portal de bienestar</div>
+      <div><span class="moon-bar" id="moonBar">☽ &nbsp;cargando...</span></div>
+    </div>
+
+    <div class="sep">elige tu práctica</div>
+
+    <div class="module-grid">
+      <div class="mod-card" onclick="goTo('yoga')">
+        <span class="mod-icon">🧘</span>
+        <div class="mod-name">Yoga</div>
+        <div class="mod-desc">Secuencias guiadas por nivel y duración</div>
+      </div>
+      <div class="mod-card" onclick="goTo('astro')">
+        <span class="mod-icon">✨</span>
+        <div class="mod-name">Yoga Astrológico</div>
+        <div class="mod-desc">Casa · Planeta · Signo</div>
+      </div>
+      <div class="mod-card" onclick="goTo('oracle')">
+        <span class="mod-icon">🔮</span>
+        <div class="mod-name">Oráculo</div>
+        <div class="mod-desc">Mensaje del día en cartas</div>
+      </div>
+      <div class="mod-card" onclick="goTo('breath')">
+        <span class="mod-icon">🌬️</span>
+        <div class="mod-name">Breathwork</div>
+        <div class="mod-desc">Transmutación · Presencia · Calma</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ YOGA ════════════════ -->
+<div id="screen-yoga" class="screen">
+  <button class="back-btn" onclick="goTo('home')">← Inicio</button>
+  <div class="card">
+    <span class="section-lbl">Estilo</span>
+    <div class="sel-grid" id="yoga-estilo">
+      <span class="sel-chip sel" data-g="estilo" data-v="Vinyasa">Vinyasa</span>
+      <span class="sel-chip" data-g="estilo" data-v="Hatha">Hatha</span>
+      <span class="sel-chip" data-g="estilo" data-v="Yin Yoga">Yin Yoga</span>
+      <span class="sel-chip" data-g="estilo" data-v="Restaurativo">Restaurativo</span>
+    </div>
+  </div>
+  <div class="card">
+    <span class="section-lbl">Nivel</span>
+    <div class="sel-grid" id="yoga-nivel">
+      <span class="sel-chip sel" data-g="nivel" data-v="principiante">🌱 Principiante</span>
+      <span class="sel-chip" data-g="nivel" data-v="intermedio">🌿 Intermedio</span>
+      <span class="sel-chip" data-g="nivel" data-v="avanzado">🔥 Avanzado</span>
+    </div>
+  </div>
+  <div class="card">
+    <span class="section-lbl">Duración</span>
+    <div class="sel-grid" id="yoga-dur">
+      <span class="sel-chip" data-g="dur" data-v="10">10 min</span>
+      <span class="sel-chip" data-g="dur" data-v="20">20 min</span>
+      <span class="sel-chip sel" data-g="dur" data-v="30">30 min</span>
+      <span class="sel-chip" data-g="dur" data-v="60">60 min</span>
+    </div>
+  </div>
+  <div class="card">
+    <span class="section-lbl">Enfoque corporal</span>
+    <div class="sel-grid" id="yoga-enfoque">
+      <span class="sel-chip sel" data-g="enfoque" data-v="cuerpo completo">Cuerpo completo</span>
+      <span class="sel-chip" data-g="enfoque" data-v="caderas y piernas">Caderas y piernas</span>
+      <span class="sel-chip" data-g="enfoque" data-v="espalda y core">Espalda y core</span>
+      <span class="sel-chip" data-g="enfoque" data-v="hombros y pecho">Hombros y pecho</span>
+    </div>
+  </div>
+  <button class="btn-main" id="yoga-gen-btn" onclick="generateYoga()">✦ Generar mi secuencia ✦</button>
+
+  <div class="loading-screen" id="yoga-loading">
+    <span class="luna-anim">🧘</span>
+    <div class="loading-txt">Tejiendo tu práctica...</div>
+  </div>
+  <div id="yoga-error"></div>
+
+  <div id="yoga-timer" style="display:none">
+    <div class="timer-box">
+      <div class="timer-pose" id="y-tpose"></div>
+      <div class="timer-num" id="y-tnum">00:00</div>
+      <div class="prog"><div class="prog-fill" id="y-tbar"></div></div>
+      <div class="tctrls">
+        <button class="tbtn" onclick="yogaPrev()">← Anterior</button>
+        <button class="tbtn pri" id="y-playbtn" onclick="yogaToggle()">▶ Iniciar</button>
+        <button class="tbtn" onclick="yogaNext()">Siguiente →</button>
+      </div>
+      <div class="tcnt" id="y-tcnt"></div>
+    </div>
+  </div>
+  <div id="yoga-seq"></div>
+</div>
+
+<!-- ════════════════ YOGA ASTROLÓGICO ════════════════ -->
+<div id="screen-astro" class="screen">
+  <button class="back-btn" onclick="goTo('home')">← Inicio</button>
+  <div class="card">
+    <span class="section-lbl">Tu signo solar</span>
+    <div class="astro-grid" id="astro-signs"></div>
+  </div>
+  <div class="card">
+    <span class="section-lbl">Planeta activo</span>
+    <div class="astro-grid-5" id="astro-planets"></div>
+  </div>
+  <div class="card">
+    <span class="section-lbl">Casa astrológica</span>
+    <div class="astro-grid-4" id="astro-houses"></div>
+  </div>
+  <div class="card">
+    <span class="section-lbl">Duración</span>
+    <div class="sel-grid" id="astro-dur">
+      <span class="sel-chip" data-g="adur" data-v="15">15 min</span>
+      <span class="sel-chip sel" data-g="adur" data-v="20">20 min</span>
+      <span class="sel-chip" data-g="adur" data-v="30">30 min</span>
+      <span class="sel-chip" data-g="adur" data-v="60">60 min</span>
+    </div>
+  </div>
+  <button class="btn-main" id="astro-gen-btn" onclick="generateAstro()">✦ Generar mi secuencia cósmica ✦</button>
+
+  <div class="loading-screen" id="astro-loading">
+    <span class="luna-anim">☽</span>
+    <div class="loading-txt">Leyendo los astros...</div>
+  </div>
+  <div id="astro-error"></div>
+
+  <div id="astro-timer" style="display:none">
+    <div class="timer-box">
+      <div class="timer-pose" id="a-tpose"></div>
+      <div class="timer-num" id="a-tnum">00:00</div>
+      <div class="prog"><div class="prog-fill" id="a-tbar"></div></div>
+      <div class="tctrls">
+        <button class="tbtn" onclick="astroPrev()">← Anterior</button>
+        <button class="tbtn pri" id="a-playbtn" onclick="astroToggle()">▶ Iniciar</button>
+        <button class="tbtn" onclick="astroNext()">Siguiente →</button>
+      </div>
+      <div class="tcnt" id="a-tcnt"></div>
+    </div>
+  </div>
+  <div id="astro-seq"></div>
+</div>
+
+<!-- ════════════════ ORÁCULO ════════════════ -->
+<div id="screen-oracle" class="screen">
+  <button class="back-btn" onclick="goTo('home')">← Inicio</button>
+  <div class="card">
+    <span class="section-lbl">¿Qué buscas hoy?</span>
+    <div class="oracle-intent">
+      <div class="int-btn sel" data-int="claridad">🌕 Claridad</div>
+      <div class="int-btn" data-int="amor">♡ Amor</div>
+      <div class="int-btn" data-int="propósito">✦ Propósito</div>
+      <div class="int-btn" data-int="sanación">🌿 Sanación</div>
+      <div class="int-btn" data-int="creatividad">🎨 Creatividad</div>
+      <div class="int-btn" data-int="abundancia">✧ Abundancia</div>
+    </div>
+  </div>
+  <div class="card">
+    <span class="section-lbl">Tipo de tirada</span>
+    <div class="sel-grid" id="oracle-tipo">
+      <span class="sel-chip sel" data-g="otipo" data-v="1">1 carta · Mensaje del día</span>
+      <span class="sel-chip" data-g="otipo" data-v="3">3 cartas · Pasado / Presente / Futuro</span>
+    </div>
+  </div>
+  <button class="btn-main" id="oracle-gen-btn" onclick="generateOracle()">✦ Consultar el oráculo ✦</button>
+
+  <div class="loading-screen" id="oracle-loading">
+    <span class="luna-anim">🔮</span>
+    <div class="loading-txt">Las cartas se revelan...</div>
+  </div>
+  <div id="oracle-error"></div>
+  <div id="oracle-result" style="display:none">
+    <div style="margin-top:1rem">
+      <div class="cards-row" id="oracle-cards"></div>
+      <div class="oracle-msg" id="oracle-msg">
+        <div class="oracle-msg-lbl">Mensaje del oráculo</div>
+        <div class="oracle-msg-txt" id="oracle-msg-txt"></div>
+      </div>
+      <div style="text-align:center;margin-top:1rem">
+        <button class="btn-secondary" onclick="resetOracle()">Nueva consulta</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ BREATHWORK ════════════════ -->
+<div id="screen-breath" class="screen">
+  <!-- SELECT -->
+  <div id="breath-select">
+    <button class="back-btn" onclick="goTo('home')">← Inicio</button>
+    <div class="card">
+      <span class="section-lbl">Técnica</span>
+      <div class="tech-grid">
+        <div class="tech-card selected" data-tech="box">
+          <div class="tech-icon">⬜</div>
+          <div class="tech-name">Box Breathing</div>
+          <div class="tech-pat">4 · 4 · 4 · 4</div>
+          <div class="tech-desc">Equilibra el sistema nervioso. Usada por meditadores para recuperar el centro.</div>
+        </div>
+        <div class="tech-card" data-tech="478">
+          <div class="tech-icon">🌙</div>
+          <div class="tech-name">4-7-8 Relajante</div>
+          <div class="tech-pat">4 · 7 · 8</div>
+          <div class="tech-desc">Activa el nervio vago. Ideal para soltar tensión y dormir mejor.</div>
+        </div>
+        <div class="tech-card" data-tech="fuego">
+          <div class="tech-icon">🔥</div>
+          <div class="tech-name">Respiración de Fuego</div>
+          <div class="tech-pat">1 · 1 continuo</div>
+          <div class="tech-desc">Kundalini Yoga. Purifica, eleva la energía y despeja la mente.</div>
+        </div>
+        <div class="tech-card" data-tech="wimhof">
+          <div class="tech-icon">❄️</div>
+          <div class="tech-name">Wim Hof</div>
+          <div class="tech-pat">30 resp. + retención</div>
+          <div class="tech-desc">30 respiraciones profundas + retención. Energía intensa y estados alterados.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <span class="section-lbl">Duración</span>
+      <div class="sel-grid" id="breath-dur">
+        <span class="sel-chip sel" data-g="bdur" data-v="5">5 min</span>
+        <span class="sel-chip" data-g="bdur" data-v="10">10 min</span>
+        <span class="sel-chip" data-g="bdur" data-v="15">15 min</span>
+        <span class="sel-chip" data-g="bdur" data-v="20">20 min</span>
+        <span class="sel-chip" data-g="bdur" data-v="30">30 min</span>
+      </div>
+    </div>
+    <div class="audio-row">
+      <span style="font-size:.85rem;color:var(--text2)">Sonido guía</span>
+      <div class="toggle-track on" id="audioToggle"></div>
+    </div>
+    <button class="btn-main" onclick="startBreath()">✦ Iniciar respiración ✦</button>
+  </div>
+
+  <!-- SESSION -->
+  <div id="breath-session" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;margin-bottom:1.2rem">
+      <span style="font-size:.82rem;color:var(--text2);letter-spacing:1px;" id="b-techname">Box Breathing</span>
+      <span style="font-size:.88rem;color:var(--text3);font-variant-numeric:tabular-nums;" id="b-timer">00:00</span>
+    </div>
+    <div class="breath-wrap">
+      <div class="orbit o1" id="o1"></div>
+      <div class="orbit o2" id="o2"></div>
+      <div class="orbit o3" id="o3"></div>
+      <div class="breath-core" id="breathCore"><span id="phaseEmoji">✦</span></div>
+    </div>
+    <div style="height:1.5rem"></div>
+    <div class="phase-label" id="phaseLabel">Inhala</div>
+    <div class="phase-count" id="phaseCount">4</div>
+    <div class="cycle-info" id="cycleInfo">ciclo 1</div>
+    <div style="margin:1rem 0">
+      <div class="prog"><div class="prog-fill" id="b-progfill" style="width:0%"></div></div>
+    </div>
+    <div style="text-align:center;margin-top:.5rem">
+      <button class="btn-secondary" onclick="endBreath(false)">Detener</button>
+    </div>
+  </div>
+
+  <!-- DONE -->
+  <div id="breath-done" style="display:none;padding-top:3rem">
+    <div class="done-glyph">✦</div>
+    <div class="done-title">Sesión completa</div>
+    <div class="done-sub" id="b-donesub"></div>
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-val" id="b-cycles">—</div><div class="stat-lbl">ciclos</div></div>
+      <div class="stat-card"><div class="stat-val" id="b-time">—</div><div class="stat-lbl">minutos</div></div>
+    </div>
+    <div style="display:flex;gap:.7rem;justify-content:center;margin-top:.5rem">
+      <button class="btn-secondary" onclick="goTo('home')">Inicio</button>
+      <button class="btn-main" style="max-width:180px" onclick="resetBreath()">Nueva sesión</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<!-- ════ BOTTOM NAV ════ -->
+<nav class="bottom-nav">
+  <div class="nav-item active" id="nav-home" onclick="goTo('home')">
+    <span class="nav-icon">☽</span>
+    <span class="nav-lbl">Inicio</span>
+  </div>
+  <div class="nav-item" id="nav-yoga" onclick="goTo('yoga')">
+    <span class="nav-icon">🧘</span>
+    <span class="nav-lbl">Yoga</span>
+  </div>
+  <div class="nav-item" id="nav-astro" onclick="goTo('astro')">
+    <span class="nav-icon">✨</span>
+    <span class="nav-lbl">Astrológico</span>
+  </div>
+  <div class="nav-item" id="nav-oracle" onclick="goTo('oracle')">
+    <span class="nav-icon">🔮</span>
+    <span class="nav-lbl">Oráculo</span>
+  </div>
+  <div class="nav-item" id="nav-breath" onclick="goTo('breath')">
+    <span class="nav-icon">🌬️</span>
+    <span class="nav-lbl">Breath</span>
+  </div>
+</nav>
+
+<script>
+/* ══ NAVIGATION ══ */
+const SCREENS=['home','yoga','astro','oracle','breath'];
+function goTo(id){
+  SCREENS.forEach(s=>{
+    document.getElementById('screen-'+s).classList.toggle('active', s===id);
+    const ni=document.getElementById('nav-'+s);
+    if(ni) ni.classList.toggle('active', s===id);
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ══ MOON BAR ══ */
+(function(){
+  const DAYS=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const MOONS=['🌑','🌒','🌓','🌔','🌕','🌖','🌗','🌘'];
+  const d=new Date(), day=DAYS[d.getDay()];
+  const moonIdx=Math.floor((d.getDate()%8));
+  const PLANETS_DAY=['Luna','Sol','Marte','Mercurio','Júpiter','Venus','Saturno'];
+  const planet=PLANETS_DAY[d.getDay()];
+  document.getElementById('moonBar').textContent=`${MOONS[moonIdx]} ${day} · Planeta: ${planet}`;
+})();
+
+/* ══ CHIP SELECTOR ══ */
+function initChips(container){
+  container.querySelectorAll('.sel-chip').forEach(c=>{
+    c.addEventListener('click',()=>{
+      const g=c.dataset.g;
+      container.querySelectorAll(`.sel-chip[data-g="${g}"]`).forEach(x=>x.classList.remove('sel'));
+      c.classList.add('sel');
+    });
+  });
+}
+document.querySelectorAll('.card').forEach(initChips);
+function getChipVal(g){ const el=document.querySelector(`.sel-chip.sel[data-g="${g}"]`); return el?el.dataset.v:null; }
+
+/* ══ AUDIO ══ */
+const AudioCtx=window.AudioContext||window.webkitAudioContext;
+let actx=null;
+let audioOn=true;
+function getCtx(){ if(!actx) actx=new AudioCtx(); return actx; }
+function tone(freq,dur,vol=0.15){
+  if(!audioOn) return;
+  try{
+    const c=getCtx(),o=c.createOscillator(),g=c.createGain();
+    o.connect(g);g.connect(c.destination);
+    o.type='sine';o.frequency.value=freq;
+    g.gain.setValueAtTime(0,c.currentTime);
+    g.gain.linearRampToValueAtTime(vol,c.currentTime+0.08);
+    g.gain.linearRampToValueAtTime(0,c.currentTime+dur);
+    o.start();o.stop(c.currentTime+dur+0.1);
+  }catch(e){}
+}
+function bell(){ tone(528,1.5,0.18); setTimeout(()=>tone(639,1,0.12),600); }
+function posturaBell(){ tone(432,0.6,0.2); setTimeout(()=>tone(528,0.4,0.12),350); }
+
+document.getElementById('audioToggle').addEventListener('click',()=>{
+  audioOn=!audioOn;
+  document.getElementById('audioToggle').classList.toggle('on',audioOn);
+});
+
+/* ══ ASTRO DATA ══ */
+const SIGNS=[{n:'Aries',s:'♈',e:'Fuego'},{n:'Tauro',s:'♉',e:'Tierra'},{n:'Géminis',s:'♊',e:'Aire'},{n:'Cáncer',s:'♋',e:'Agua'},{n:'Leo',s:'♌',e:'Fuego'},{n:'Virgo',s:'♍',e:'Tierra'},{n:'Libra',s:'♎',e:'Aire'},{n:'Escorpio',s:'♏',e:'Agua'},{n:'Sagitario',s:'♐',e:'Fuego'},{n:'Capricornio',s:'♑',e:'Tierra'},{n:'Acuario',s:'♒',e:'Aire'},{n:'Piscis',s:'♓',e:'Agua'}];
+const PLANETS=[{n:'Sol',s:'☀',d:0},{n:'Luna',s:'☽',d:1},{n:'Marte',s:'♂',d:2},{n:'Mercurio',s:'☿',d:3},{n:'Júpiter',s:'♃',d:4},{n:'Venus',s:'♀',d:5},{n:'Saturno',s:'♄',d:6},{n:'Urano',s:'⛢',d:null},{n:'Neptuno',s:'♆',d:null},{n:'Plutón',s:'♇',d:null}];
+const HOUSES=[{n:'Casa I',desc:'Identidad'},{n:'Casa II',desc:'Recursos'},{n:'Casa III',desc:'Comunicación'},{n:'Casa IV',desc:'Hogar'},{n:'Casa V',desc:'Creatividad'},{n:'Casa VI',desc:'Salud'},{n:'Casa VII',desc:'Relaciones'},{n:'Casa VIII',desc:'Transformación'},{n:'Casa IX',desc:'Expansión'},{n:'Casa X',desc:'Vocación'},{n:'Casa XI',desc:'Comunidad'},{n:'Casa XII',desc:'Inconsciente'}];
+
+const dow=new Date().getDay();
+const todayP=PLANETS.find(p=>p.d===dow);
+let selSign=null,selPlanet=null,selHouse=null;
+
+function buildAstroSelectors(){
+  // Signs
+  const sg=document.getElementById('astro-signs');
+  SIGNS.forEach(item=>{
+    const b=document.createElement('button');
+    b.className='abtn';
+    b.innerHTML=`<span class="sym">${item.s}</span><span class="nm">${item.n}</span>`;
+    b.onclick=()=>{ sg.querySelectorAll('.abtn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); selSign=item; };
+    sg.appendChild(b);
+  });
+  // Planets
+  const pg=document.getElementById('astro-planets');
+  PLANETS.forEach(item=>{
+    const b=document.createElement('button');
+    b.className='abtn'+(item===todayP?' today-p':'');
+    const pip=item===todayP?'<span class="today-pip">hoy</span>':'';
+    b.innerHTML=`<span class="sym">${item.s}</span><span class="nm">${item.n}${pip}</span>`;
+    b.onclick=()=>{ pg.querySelectorAll('.abtn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); selPlanet=item; };
+    pg.appendChild(b);
+  });
+  // Houses
+  const hg=document.getElementById('astro-houses');
+  HOUSES.forEach(item=>{
+    const b=document.createElement('button');
+    b.className='abtn';
+    b.innerHTML=`<span class="sym" style="font-size:.75rem;font-weight:500">${item.n}</span><span class="nm">${item.desc}</span>`;
+    b.onclick=()=>{ hg.querySelectorAll('.abtn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); selHouse=item; };
+    hg.appendChild(b);
+  });
+  // Init dur chips
+  initChips(document.getElementById('screen-astro'));
+}
+buildAstroSelectors();
+
+/* ══ CLAUDE API ══ */
+async function callClaude(prompt, maxTokens=2000){
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:maxTokens,
+      messages:[{role:'user',content:prompt}]
+    })
+  });
+  const data=await res.json();
+  if(data.error) throw new Error(data.error.message);
+  return data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim();
+}
+
+/* ══ SEQUENCE RENDERER ══ */
+let ySeq=[],yCur=0,yTime=0,yTotal=0,yPlaying=false,yIv=null;
+
+function renderSequence(data, containerId, timerPrefix){
+  const seq=[];
+  const PCOLORS=['rgba(127,119,221,0.4)','rgba(201,169,110,0.4)','rgba(180,127,207,0.4)','rgba(127,180,170,0.4)','rgba(180,127,127,0.4)'];
+  let html=`<div class="seq-header"><div class="seq-title">${data.titulo}</div><div class="seq-meta" id="${timerPrefix}-meta"></div></div>`;
+  data.fases.forEach((fase,fi)=>{
+    html+=`<span class="phase-lbl">${fase.nombre}</span>`;
+    fase.asanas.forEach(a=>{
+      seq.push({...a, fase:fase.nombre});
+      const m=Math.floor(a.duracion_seg/60),sc=a.duracion_seg%60;
+      const ts=m>0?m+'m'+(sc?' '+sc+'s':''):sc+'s';
+      html+=`<div class="asana-card" style="border-left:2px solid ${PCOLORS[fi%PCOLORS.length]}">
+        <div class="asana-top">
+          <span class="asana-ico">${a.icono||'🧘'}</span>
+          <div style="flex:1"><div class="asana-skt">${a.sanskrit}</div><div class="asana-esp">${a.español}</div></div>
+          <span class="asana-t">⏱ ${ts}</span>
+        </div>
+        <div class="asana-tags">
+          <span class="tag tc">◉ ${a.chakra||''}</span>
+          <span class="tag tp">${a.planeta_asoc||''}</span>
+        </div>
+        <div class="breath-hint">🌬 ${a.respiracion||''}</div>
+      </div>`;
+    });
+  });
+  if(data.afirmacion) html+=`<div class="affirm"><div class="affirm-lbl">Afirmación de cierre</div><div class="affirm-txt">"${data.afirmacion}"</div></div>`;
+  document.getElementById(containerId).innerHTML=html;
+  return seq;
+}
+
+function fmtTime(s){ return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+
+function updateTimerUI(seq,cur,prefix){
+  if(!seq.length) return;
+  const p=seq[cur];
+  document.getElementById(prefix+'-tpose').textContent=(p.icono||'🧘')+' '+p.sanskrit+' — '+p.español;
+  yTotal=p.duracion_seg; yTime=yTotal;
+  document.getElementById(prefix+'-tnum').textContent=fmtTime(yTime);
+  document.getElementById(prefix+'-tbar').style.width='0%';
+  document.getElementById(prefix+'-tcnt').textContent='Pose '+(cur+1)+' de '+seq.length+' · '+p.fase;
+}
+
+/* ── YOGA ── */
+async function generateYoga(){
+  const estilo=getChipVal('estilo'), nivel=getChipVal('nivel'), dur=getChipVal('dur'), enfoque=getChipVal('enfoque');
+  document.getElementById('yoga-loading').classList.add('on');
+  document.getElementById('yoga-gen-btn').disabled=true;
+  document.getElementById('yoga-error').innerHTML='';
+  document.getElementById('yoga-seq').innerHTML='';
+  document.getElementById('yoga-timer').style.display='none';
+  try{
+    const prompt=`Eres experto en yoga. Genera una secuencia de ${dur} minutos, estilo ${estilo}, nivel ${nivel}, enfoque ${enfoque}. La última fase SIEMPRE es Meditación final (al menos 5 min para 30min, 10 min para 60min). Responde SOLO con JSON válido sin backticks. Estructura: {"titulo":"string","afirmacion":"string","fases":[{"nombre":"string","asanas":[{"sanskrit":"string","español":"string","icono":"emoji","duracion_seg":number,"chakra":"string","planeta_asoc":"string","respiracion":"string"}]}]}. Usa fases: Pranayama, Calentamiento, Poses activas, Restaurativas, Meditación final. La suma de duracion_seg debe ser exactamente ${dur*60}.`;
+    const txt=await callClaude(prompt);
+    const data=JSON.parse(txt);
+    ySeq=renderSequence(data,'yoga-seq','y');
+    yCur=0; yPlaying=false;
+    updateTimerUI(ySeq,yCur,'y');
+    document.getElementById('yoga-timer').style.display='block';
+    document.getElementById('yoga-timer').scrollIntoView({behavior:'smooth'});
+  }catch(e){
+    document.getElementById('yoga-error').innerHTML=`<div class="errmsg">Error: ${e.message}</div>`;
+  }
+  document.getElementById('yoga-loading').classList.remove('on');
+  document.getElementById('yoga-gen-btn').disabled=false;
+}
+
+function yogaToggle(){
+  yPlaying=!yPlaying;
+  const btn=document.getElementById('y-playbtn');
+  btn.textContent=yPlaying?'⏸ Pausar':'▶ Iniciar';
+  if(yPlaying){
+    yIv=setInterval(()=>{
+      if(yTime>0){ yTime--; document.getElementById('y-tnum').textContent=fmtTime(yTime); const pct=(yTotal-yTime)/yTotal*100; document.getElementById('y-tbar').style.width=pct+'%'; }
+      else{
+        clearInterval(yIv); posturaBell();
+        if(yCur<ySeq.length-1){ yCur++; updateTimerUI(ySeq,yCur,'y'); if(yPlaying){ yIv=setInterval(arguments.callee,1000); } }
+        else{ yPlaying=false; btn.textContent='✓ Completado'; bell(); }
+      }
+    },1000);
+  } else clearInterval(yIv);
+}
+function yogaPrev(){ clearInterval(yIv); yPlaying=false; if(yCur>0){yCur--;updateTimerUI(ySeq,yCur,'y');document.getElementById('y-playbtn').textContent='▶ Iniciar';} }
+function yogaNext(){ clearInterval(yIv); yPlaying=false; if(yCur<ySeq.length-1){yCur++;updateTimerUI(ySeq,yCur,'y');document.getElementById('y-playbtn').textContent='▶ Iniciar';} }
+
+/* ── YOGA ASTROLÓGICO ── */
+let aSeq=[],aCur=0,aTime=0,aTotal=0,aPlaying=false,aIv=null;
+
+async function generateAstro(){
+  if(!selSign||!selPlanet||!selHouse){ document.getElementById('astro-error').innerHTML='<div class="errmsg">Selecciona signo, planeta y casa.</div>'; return; }
+  const dur=getChipVal('adur')||'20';
+  document.getElementById('astro-loading').classList.add('on');
+  document.getElementById('astro-gen-btn').disabled=true;
+  document.getElementById('astro-error').innerHTML='';
+  document.getElementById('astro-seq').innerHTML='';
+  document.getElementById('astro-timer').style.display='none';
+  try{
+    const prompt=`Eres experto en yoga astrológico. Genera una secuencia de ${dur} minutos para: Signo ${selSign.n} (${selSign.e}), Planeta ${selPlanet.n}, ${selHouse.n} (${selHouse.desc}). La última fase SIEMPRE es Meditación final temática según el planeta (mínimo 5 min). Responde SOLO con JSON válido sin backticks. Estructura: {"titulo":"string","afirmacion":"string","fases":[{"nombre":"string","asanas":[{"sanskrit":"string","español":"string","icono":"emoji","duracion_seg":number,"chakra":"string","planeta_asoc":"string","respiracion":"string"}]}]}. Usa 5 fases: Apertura, Calentamiento, Poses activas, Restaurativas, Meditación final. La suma de duracion_seg debe ser exactamente ${dur*60}.`;
+    const txt=await callClaude(prompt);
+    const data=JSON.parse(txt);
+    aSeq=renderSequence(data,'astro-seq','a');
+    aCur=0; aPlaying=false;
+    updateTimerUI_A(aCur);
+    document.getElementById('astro-timer').style.display='block';
+    document.getElementById('astro-timer').scrollIntoView({behavior:'smooth'});
+  }catch(e){
+    document.getElementById('astro-error').innerHTML=`<div class="errmsg">Error: ${e.message}</div>`;
+  }
+  document.getElementById('astro-loading').classList.remove('on');
+  document.getElementById('astro-gen-btn').disabled=false;
+}
+
+function updateTimerUI_A(cur){
+  if(!aSeq.length) return;
+  const p=aSeq[cur];
+  document.getElementById('a-tpose').textContent=(p.icono||'🧘')+' '+p.sanskrit+' — '+p.español;
+  aTotal=p.duracion_seg; aTime=aTotal;
+  document.getElementById('a-tnum').textContent=fmtTime(aTime);
+  document.getElementById('a-tbar').style.width='0%';
+  document.getElementById('a-tcnt').textContent='Pose '+(cur+1)+' de '+aSeq.length+' · '+p.fase;
+}
+function astroToggle(){
+  aPlaying=!aPlaying;
+  const btn=document.getElementById('a-playbtn');
+  btn.textContent=aPlaying?'⏸ Pausar':'▶ Iniciar';
+  if(aPlaying){
+    aIv=setInterval(()=>{
+      if(aTime>0){ aTime--; document.getElementById('a-tnum').textContent=fmtTime(aTime); const pct=(aTotal-aTime)/aTotal*100; document.getElementById('a-tbar').style.width=pct+'%'; }
+      else{
+        clearInterval(aIv); posturaBell();
+        if(aCur<aSeq.length-1){ aCur++; updateTimerUI_A(aCur); if(aPlaying){ aIv=setInterval(arguments.callee,1000); } }
+        else{ aPlaying=false; btn.textContent='✓ Completado'; bell(); }
+      }
+    },1000);
+  } else clearInterval(aIv);
+}
+function astroPrev(){ clearInterval(aIv); aPlaying=false; if(aCur>0){aCur--;updateTimerUI_A(aCur);document.getElementById('a-playbtn').textContent='▶ Iniciar';} }
+function astroNext(){ clearInterval(aIv); aPlaying=false; if(aCur<aSeq.length-1){aCur++;updateTimerUI_A(aCur);document.getElementById('a-playbtn').textContent='▶ Iniciar';} }
+
+/* ── ORÁCULO ── */
+let selIntent='claridad', oTipo='1';
+document.querySelectorAll('.int-btn').forEach(b=>{
+  b.addEventListener('click',()=>{ document.querySelectorAll('.int-btn').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); selIntent=b.dataset.int; });
+});
+document.querySelectorAll('[data-g="otipo"]').forEach(b=>{
+  b.addEventListener('click',()=>{ document.querySelectorAll('[data-g="otipo"]').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); oTipo=b.dataset.v; });
+});
+
+const CARD_EMOJIS=['🌙','⭐','☀️','🌊','🔥','🌿','💫','🦋','🌸','🗝️','⚡','🌈'];
+const CARD_NAMES=['La Luna','La Estrella','El Sol','Las Aguas','El Fuego','El Jardín','El Destino','La Transformación','El Florecimiento','Las Puertas','El Rayo','El Arco Iris'];
+
+async function generateOracle(){
+  const n=parseInt(oTipo);
+  document.getElementById('oracle-loading').classList.add('on');
+  document.getElementById('oracle-gen-btn').disabled=true;
+  document.getElementById('oracle-error').innerHTML='';
+  document.getElementById('oracle-result').style.display='none';
+  try{
+    const tirada=n===1?'1 carta (mensaje del día)':'3 cartas (Pasado, Presente, Futuro)';
+    const prompt=`Eres un oráculo de sabiduría ancestral. Genera una tirada de ${tirada} para la intención: "${selIntent}". Responde SOLO con JSON válido sin backticks. Estructura: {"cartas":[{"nombre":"string","posicion":"string","simbolo":"emoji unico","significado":"frase corta poetica","mensaje":"frase de 15-20 palabras inspiradora"}],"mensaje_global":"párrafo de 40-60 palabras de sabiduría profunda y poética para la intención ${selIntent}"}`;
+    const txt=await callClaude(prompt,800);
+    const data=JSON.parse(txt);
+    renderOracle(data);
+  }catch(e){
+    document.getElementById('oracle-error').innerHTML=`<div class="errmsg">Error: ${e.message}</div>`;
+  }
+  document.getElementById('oracle-loading').classList.remove('on');
+  document.getElementById('oracle-gen-btn').disabled=false;
+}
+
+function renderOracle(data){
+  const row=document.getElementById('oracle-cards');
+  row.innerHTML='';
+  data.cartas.forEach((carta,i)=>{
+    const slot=document.createElement('div');
+    slot.className='oracle-card-slot';
+    slot.innerHTML=`
+      <div class="card-back">✦</div>
+      <div class="card-inner">
+        <div style="font-size:1.6rem">${carta.simbolo||'✦'}</div>
+        <div class="card-name">${carta.nombre}</div>
+        <div class="card-meaning">${carta.posicion||''}</div>
+        <div class="card-meaning" style="margin-top:.2rem">${carta.significado||''}</div>
+      </div>`;
+    slot.addEventListener('click',()=>{ slot.classList.toggle('revealed'); tone(528,0.8,0.12); });
+    row.appendChild(slot);
+    setTimeout(()=>slot.classList.add('revealed'),400+(i*300));
+  });
+  document.getElementById('oracle-msg-txt').textContent=data.mensaje_global||'';
+  document.getElementById('oracle-result').style.display='block';
+  document.getElementById('oracle-result').scrollIntoView({behavior:'smooth'});
+  bell();
+}
+
+function resetOracle(){
+  document.getElementById('oracle-result').style.display='none';
+  document.getElementById('oracle-cards').innerHTML='';
+  document.getElementById('oracle-msg-txt').textContent='';
+}
+
+/* ── BREATHWORK ── */
+const TECHS={
+  box:  {name:'Box Breathing',  phases:[{l:'Inhala',e:'🫁',d:4},{l:'Retén',e:'✦',d:4},{l:'Exhala',e:'🌬',d:4},{l:'Retén',e:'✦',d:4}]},
+  '478':{name:'4-7-8 Relajante',phases:[{l:'Inhala',e:'🌙',d:4},{l:'Retén',e:'✦',d:7},{l:'Exhala',e:'🌬',d:8}]},
+  fuego:{name:'Respiración de Fuego',phases:[{l:'Inhala',e:'🔥',d:1},{l:'Exhala',e:'💨',d:1}]},
+  wimhof:{name:'Wim Hof',phases:[{l:'Inhala',e:'❄️',d:2},{l:'Exhala',e:'🌬',d:2}],retEvery:30,retDur:15}
+};
+
+let bTech='box',bMin=5;
+let bMainIv=null,bPhaseIv=null,bAnimId=null;
+let bElapsed=0,bTotal=0,bCycles=0,bPIdx=0,bBreaths=0;
+
+document.querySelectorAll('.tech-card').forEach(c=>c.addEventListener('click',()=>{
+  document.querySelectorAll('.tech-card').forEach(x=>x.classList.remove('selected'));
+  c.classList.add('selected'); bTech=c.dataset.tech;
+}));
+document.querySelectorAll('[data-g="bdur"]').forEach(b=>b.addEventListener('click',()=>bMin=+b.dataset.v));
+
+function startBreath(){
+  const t=TECHS[bTech];
+  bElapsed=0;bTotal=bMin*60;bCycles=0;bPIdx=0;bBreaths=0;
+  document.getElementById('b-techname').textContent=t.name;
+  document.getElementById('b-timer').textContent=fmtTime(bTotal);
+  document.getElementById('b-progfill').style.width='0%';
+  document.getElementById('cycleInfo').textContent='ciclo 1';
+  document.getElementById('breath-select').style.display='none';
+  document.getElementById('breath-session').style.display='block';
+  document.getElementById('breath-done').style.display='none';
+  bMainIv=setInterval(()=>{
+    bElapsed++;
+    document.getElementById('b-timer').textContent=fmtTime(bTotal-bElapsed);
+    document.getElementById('b-progfill').style.width=(bElapsed/bTotal*100)+'%';
+    if(bElapsed>=bTotal) endBreath(true);
+  },1000);
+  runBPhase();
+}
+
+function runBPhase(){
+  const t=TECHS[bTech],ph=t.phases[bPIdx];
+  let c=ph.d;
+  document.getElementById('phaseLabel').textContent=ph.l;
+  document.getElementById('phaseEmoji').textContent=ph.e;
+  document.getElementById('phaseCount').textContent=c;
+  bChime(ph.l); bAnimTarget(ph.l);
+  bPhaseIv=setInterval(()=>{
+    c--;document.getElementById('phaseCount').textContent=c;
+    if(c<=0){ clearInterval(bPhaseIv); nextBPhase(); }
+  },1000);
+}
+
+function nextBPhase(){
+  const t=TECHS[bTech];
+  bPIdx=(bPIdx+1)%t.phases.length;
+  if(bPIdx===0){ bCycles++;bBreaths++;document.getElementById('cycleInfo').textContent='ciclo '+(bCycles+1); if(bTech==='wimhof'&&bBreaths%30===0){bRetention();return;} }
+  runBPhase();
+}
+
+function bRetention(){
+  document.getElementById('phaseLabel').textContent='Retención';
+  document.getElementById('phaseEmoji').textContent='✦';
+  tone(174,2,0.15); bAnimTarget('Retén');
+  let r=TECHS.wimhof.retDur; document.getElementById('phaseCount').textContent=r;
+  bPhaseIv=setInterval(()=>{r--;document.getElementById('phaseCount').textContent=r;if(r<=0){clearInterval(bPhaseIv);bPIdx=0;runBPhase();}},1000);
+}
+
+function bChime(ph){ ph==='Inhala'?tone(528,.4):ph==='Exhala'?tone(264,.5):tone(396,.3); }
+
+function bAnimTarget(label){
+  cancelAnimationFrame(bAnimId);
+  const tgt=label==='Inhala'?1.28:label==='Exhala'?0.84:1;
+  const core=document.getElementById('breathCore');
+  const o1=document.getElementById('o1'),o2=document.getElementById('o2'),o3=document.getElementById('o3');
+  let cur=parseFloat(core.style.transform?.match(/scale\(([^)]+)\)/)?.[1]||1);
+  function step(){
+    const d=tgt-cur;if(Math.abs(d)<0.004)cur=tgt;else cur+=d*.07;
+    const s=cur.toFixed(3);
+    core.style.transform=`scale(${s})`;
+    o1.style.transform=`scale(${(1+(cur-1)*.35).toFixed(3)})`;
+    o2.style.transform=`scale(${(1+(cur-1)*.6).toFixed(3)})`;
+    o3.style.transform=`scale(${(1+(cur-1)*.85).toFixed(3)})`;
+    if(Math.abs(tgt-cur)>.004) bAnimId=requestAnimationFrame(step);
+  }
+  bAnimId=requestAnimationFrame(step);
+}
+
+function endBreath(natural){
+  clearInterval(bMainIv);clearInterval(bPhaseIv);cancelAnimationFrame(bAnimId);
+  document.getElementById('breath-session').style.display='none';
+  document.getElementById('breath-done').style.display='block';
+  const mins=Math.max(1,Math.round(bElapsed/60));
+  document.getElementById('b-donesub').textContent=`${bMin} min de ${TECHS[bTech].name}`;
+  document.getElementById('b-cycles').textContent=bCycles;
+  document.getElementById('b-time').textContent=mins;
+  bell();
+}
+
+function resetBreath(){
+  document.getElementById('breath-done').style.display='none';
+  document.getElementById('breath-select').style.display='block';
+}
+</script>
+</body>
+</html>

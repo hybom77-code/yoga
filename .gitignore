@@ -1,0 +1,13 @@
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Dependencias (por si agregas en el futuro)
+node_modules/
+
+# Entornos y claves
+.env
+.env.local
+
+# Logs
+*.log

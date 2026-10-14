@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ananta · Portal de Bienestar</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="stars"></div>
+
+<div class="wrap">
+
+<div style="position:absolute;top:15px;right:15px;z-index:100;">
+  <select id="tenant-selector" onchange="setTenant(this.value)" style="background:var(--bg);color:var(--text2);border:0.5px solid var(--border);border-radius:10px;padding:6px 10px;font-family:'Cormorant Garamond',serif;font-size:13px;cursor:pointer;outline:none;">
+    <option value="ananta">✧ Ananta (Púrpura)</option>
+    <option value="zenith">✧ Zenith (Esmeralda)</option>
+    <option value="lumina">✧ Lumina (Azul)</option>
+  </select>
+</div>
+
+<!-- ════════════════ BREATHWORK ════════════════ -->
+<div id="screen-breath" class="screen active">
+  <!-- SELECT -->
+  <div id="breath-select">
+    <button class="back-btn" onclick="goTo('home')">← Inicio</button>
+    <div class="card">
+      <span class="section-lbl">Técnica</span>
+      <div class="tech-grid">
+        <div class="tech-card selected" data-tech="box">
+          <div class="tech-icon">⬜</div>
+          <div class="tech-name">Box Breathing</div>
+          <div class="tech-pat">4 · 4 · 4 · 4</div>
+          <div class="tech-desc">Equilibra el sistema nervioso. Usada por meditadores para recuperar el centro.</div>
+        </div>
+        <div class="tech-card" data-tech="478">
+          <div class="tech-icon">🌙</div>
+          <div class="tech-name">4-7-8 Relajante</div>
+          <div class="tech-pat">4 · 7 · 8</div>
+          <div class="tech-desc">Activa el nervio vago. Ideal para soltar tensión y dormir mejor.</div>
+        </div>
+        <div class="tech-card" data-tech="fuego">
+          <div class="tech-icon">🔥</div>
+          <div class="tech-name">Respiración de Fuego</div>
+          <div class="tech-pat">1 · 1 continuo</div>
+          <div class="tech-desc">Kundalini Yoga. Purifica, eleva la energía y despeja la mente.</div>
+        </div>
+        <div class="tech-card" data-tech="wimhof">
+          <div class="tech-icon">❄️</div>
+          <div class="tech-name">Wim Hof</div>
+          <div class="tech-pat">30 resp. + retención</div>
+          <div class="tech-desc">30 respiraciones profundas + retención. Energía intensa y estados alterados.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <span class="section-lbl">Duración</span>
+      <div class="sel-grid" id="breath-dur">
+        <span class="sel-chip sel" data-g="bdur" data-v="5">5 min</span>
+        <span class="sel-chip" data-g="bdur" data-v="10">10 min</span>
+        <span class="sel-chip" data-g="bdur" data-v="15">15 min</span>
+        <span class="sel-chip" data-g="bdur" data-v="20">20 min</span>
+        <span class="sel-chip" data-g="bdur" data-v="30">30 min</span>
+      </div>
+    </div>
+    <div class="audio-row">
+      <span style="font-size:.85rem;color:var(--text2)">Sonido guía</span>
+      <div class="toggle-track on" id="audioToggle"></div>
+    </div>
+    <button class="btn-main" onclick="startBreath()">✦ Iniciar respiración ✦</button>
+  </div>
+
+  <!-- SESSION -->
+  <div id="breath-session" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;margin-bottom:1.2rem">
+      <span style="font-size:.82rem;color:var(--text2);letter-spacing:1px;" id="b-techname">Box Breathing</span>
+      <span style="font-size:.88rem;color:var(--text3);font-variant-numeric:tabular-nums;" id="b-timer">00:00</span>
+    </div>
+    <div class="breath-wrap">
+      <div class="orbit o1" id="o1"></div>
+      <div class="orbit o2" id="o2"></div>
+      <div class="orbit o3" id="o3"></div>
+      <div class="breath-core" id="breathCore"><span id="phaseEmoji">✦</span></div>
+    </div>
+    <div style="height:1.5rem"></div>
+    <div class="phase-label" id="phaseLabel">Inhala</div>
+    <div class="phase-count" id="phaseCount">4</div>
+    <div class="cycle-info" id="cycleInfo">ciclo 1</div>
+    <div style="margin:1rem 0">
+      <div class="prog"><div class="prog-fill" id="b-progfill" style="width:0%"></div></div>
+    </div>
+    <div style="text-align:center;margin-top:.5rem">
+      <button class="btn-secondary" onclick="endBreath(false)">Detener</button>
+    </div>
+  </div>
+
+  <!-- DONE -->
+  <div id="breath-done" style="display:none;padding-top:3rem">
+    <div class="done-glyph">✦</div>
+    <div class="done-title">Sesión completa</div>
+    <div class="done-sub" id="b-donesub"></div>
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-val" id="b-cycles">—</div><div class="stat-lbl">ciclos</div></div>
+      <div class="stat-card"><div class="stat-val" id="b-time">—</div><div class="stat-lbl">minutos</div></div>
+    </div>
+    <div style="display:flex;gap:.7rem;justify-content:center;margin-top:.5rem">
+      <button class="btn-secondary" onclick="goTo('home')">Inicio</button>
+      <button class="btn-main" style="max-width:180px" onclick="resetBreath()">Nueva sesión</button>
+    </div>
+  </div>
+</div>
+
+  <div style="margin-top: 2rem; margin-bottom: 2rem; text-align: center;">
+    <button class="btn-secondary" onclick="goTo('premium')">✧ Ver planes premium ✧</button>
+  </div>
+</div><!-- /wrap -->
+
+<!-- ════ BOTTOM NAV ════ -->
+<nav class="bottom-nav">
+  <div class="nav-item" id="nav-home" onclick="goTo('home')">
+    <span class="nav-icon">☽</span>
+    <span class="nav-lbl">Inicio</span>
+  </div>
+  <div class="nav-item" id="nav-yoga" onclick="goTo('yoga')">
+    <span class="nav-icon">🧘</span>
+    <span class="nav-lbl">Yoga</span>
+  </div>
+  <div class="nav-item" id="nav-astro" onclick="goTo('astro')">
+    <span class="nav-icon">✨</span>
+    <span class="nav-lbl">Astrológico</span>
+  </div>
+  <div class="nav-item" id="nav-oracle" onclick="goTo('oracle')">
+    <span class="nav-icon">🔮</span>
+    <span class="nav-lbl">Oráculo</span>
+  </div>
+  <div class="nav-item" id="nav-breath" onclick="goTo('breath')">
+    <span class="nav-icon">🌬️</span>
+    <span class="nav-lbl">Breath</span>
+  </div>
+</nav>
+
+<script src="script.js"></script>
+</body>
+</html>

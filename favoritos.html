@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis Favoritos · Portal de Bienestar</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="stars"></div>
+
+<div class="wrap">
+
+<div style="position:absolute;top:15px;right:15px;z-index:100;">
+  <select id="tenant-selector" onchange="setTenant(this.value)" style="background:var(--bg);color:var(--text2);border:0.5px solid var(--border);border-radius:10px;padding:6px 10px;font-family:'Cormorant Garamond',serif;font-size:13px;cursor:pointer;outline:none;">
+    <option value="ananta">✧ Ananta (Púrpura)</option>
+    <option value="zenith">✧ Zenith (Esmeralda)</option>
+    <option value="lumina">✧ Lumina (Azul)</option>
+  </select>
+</div>
+
+<div id="screen-favoritos" class="screen active">
+  <button class="back-btn" onclick="goTo('home')">← Volver al Inicio</button>
+  
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <h2 style="font-family: 'Cinzel', serif; font-size: 18px; color: var(--text); letter-spacing: 0.1em; font-weight: normal; margin-bottom: 0.5rem;">Mis Rutinas Guardadas</h2>
+    <p style="color: var(--text2); font-style: italic; font-size: 14px;">Tus secuencias de yoga y astrológicas para volver a practicarlas.</p>
+  </div>
+
+  <div id="favoritos-list">
+    <!-- Rendered via JS -->
+  </div>
+</div>
+
+  <div style="margin-top: 2rem; margin-bottom: 2rem; text-align: center;">
+    <button class="btn-secondary" onclick="goTo('premium')">✧ Ver planes premium ✧</button>
+  </div>
+</div><!-- /wrap -->
+
+<!-- ════ BOTTOM NAV ════ -->
+<nav class="bottom-nav">
+  <div class="nav-item" id="nav-home" onclick="goTo('home')">
+    <span class="nav-icon">☽</span>
+    <span class="nav-lbl">Inicio</span>
+  </div>
+  <div class="nav-item" id="nav-yoga" onclick="goTo('yoga')">
+    <span class="nav-icon">🧘</span>
+    <span class="nav-lbl">Yoga</span>
+  </div>
+  <div class="nav-item" id="nav-astro" onclick="goTo('astro')">
+    <span class="nav-icon">✨</span>
+    <span class="nav-lbl">Astrológico</span>
+  </div>
+  <div class="nav-item" id="nav-oracle" onclick="goTo('oracle')">
+    <span class="nav-icon">🔮</span>
+    <span class="nav-lbl">Oráculo</span>
+  </div>
+  <div class="nav-item" id="nav-breath" onclick="goTo('breath')">
+    <span class="nav-icon">🌬️</span>
+    <span class="nav-lbl">Breath</span>
+  </div>
+</nav>
+
+<script src="script.js"></script>
+</body>
+</html>

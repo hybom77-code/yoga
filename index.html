@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ananta · Portal de Bienestar</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="stars"></div>
+
+<div class="wrap">
+
+<div style="position:absolute;top:15px;right:15px;z-index:100;">
+  <select id="tenant-selector" onchange="setTenant(this.value)" style="background:var(--bg);color:var(--text2);border:0.5px solid var(--border);border-radius:10px;padding:6px 10px;font-family:'Cormorant Garamond',serif;font-size:13px;cursor:pointer;outline:none;">
+    <option value="ananta">✧ Ananta (Púrpura)</option>
+    <option value="zenith">✧ Zenith (Esmeralda)</option>
+    <option value="lumina">✧ Lumina (Azul)</option>
+  </select>
+</div>
+
+<!-- ════════════════ HOME ════════════════ -->
+<div id="screen-home" class="screen active">
+  <div id="screen-home-inner">
+    <div class="home-header">
+      <div class="mandala-wrap" id="app-logo">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(127,119,221,0.3)" stroke-width=".5"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(127,119,221,0.2)" stroke-width=".5"/>
+          <circle cx="50" cy="50" r="28" fill="none" stroke="rgba(201,169,110,0.25)" stroke-width=".5"/>
+          <circle cx="50" cy="50" r="4" fill="rgba(127,119,221,0.6)"/>
+          <g stroke="rgba(127,119,221,0.4)" stroke-width=".5" fill="none">
+            <line x1="50" y1="2" x2="50" y2="98"/>
+            <line x1="2" y1="50" x2="98" y2="50"/>
+            <line x1="15" y1="15" x2="85" y2="85"/>
+            <line x1="85" y1="15" x2="15" y2="85"/>
+          </g>
+          <g fill="none" stroke="rgba(201,169,110,0.35)" stroke-width=".5">
+            <polygon points="50,12 88,71 12,71"/>
+            <polygon points="50,88 12,29 88,29"/>
+          </g>
+          <g fill="rgba(127,119,221,0.5)">
+            <circle cx="50" cy="12" r="1.5"/>
+            <circle cx="88" cy="71" r="1.5"/>
+            <circle cx="12" cy="71" r="1.5"/>
+            <circle cx="50" cy="88" r="1.5"/>
+            <circle cx="88" cy="29" r="1.5"/>
+            <circle cx="12" cy="29" r="1.5"/>
+          </g>
+        </svg>
+      </div>
+      <div class="app-title" id="app-title">Ananta</div>
+      <div class="app-sub" id="app-sub">tu portal de bienestar</div>
+      <div><span class="moon-bar" id="moonBar">☽ &nbsp;cargando...</span></div>
+    </div>
+
+    <div class="sep">elige tu práctica</div>
+
+    <div class="module-grid">
+      <div class="mod-card" onclick="goTo('yoga')">
+        <span class="mod-icon">🧘</span>
+        <div class="mod-name">Yoga</div>
+        <div class="mod-desc">Secuencias guiadas por nivel y duración</div>
+      </div>
+      <div class="mod-card" onclick="goTo('astro')">
+        <span class="mod-icon">✨</span>
+        <div class="mod-name">Yoga Astrológico</div>
+        <div class="mod-desc">Casa · Planeta · Signo</div>
+      </div>
+      <div class="mod-card" onclick="goTo('oracle')">
+        <span class="mod-icon">🔮</span>
+        <div class="mod-name">Oráculo</div>
+        <div class="mod-desc">Mensaje del día en cartas</div>
+      </div>
+      <div class="mod-card" onclick="goTo('breath')">
+        <span class="mod-icon">🌬️</span>
+        <div class="mod-name">Breathwork</div>
+        <div class="mod-desc">Transmutación · Presencia · Calma</div>
+      </div>
+    </div>
+    
+    <div class="mod-card-wide" onclick="goTo('favoritos')">
+      <span class="mod-icon">🤍</span>
+      <div class="mod-name">Mis Rutinas Guardadas</div>
+      <div class="mod-desc">Accede a tus secuencias favoritas</div>
+    </div>
+  </div>
+</div>
+
+  <div style="margin-top: 2rem; margin-bottom: 2rem; text-align: center;">
+    <button class="btn-secondary" onclick="goTo('premium')">✧ Ver planes premium ✧</button>
+  </div>
+</div><!-- /wrap -->
+
+<!-- ════ BOTTOM NAV ════ -->
+<nav class="bottom-nav">
+  <div class="nav-item" id="nav-home" onclick="goTo('home')">
+    <span class="nav-icon">☽</span>
+    <span class="nav-lbl">Inicio</span>
+  </div>
+  <div class="nav-item" id="nav-yoga" onclick="goTo('yoga')">
+    <span class="nav-icon">🧘</span>
+    <span class="nav-lbl">Yoga</span>
+  </div>
+  <div class="nav-item" id="nav-astro" onclick="goTo('astro')">
+    <span class="nav-icon">✨</span>
+    <span class="nav-lbl">Astrológico</span>
+  </div>
+  <div class="nav-item" id="nav-oracle" onclick="goTo('oracle')">
+    <span class="nav-icon">🔮</span>
+    <span class="nav-lbl">Oráculo</span>
+  </div>
+  <div class="nav-item" id="nav-breath" onclick="goTo('breath')">
+    <span class="nav-icon">🌬️</span>
+    <span class="nav-lbl">Breath</span>
+  </div>
+</nav>
+
+<script src="script.js"></script>
+</body>
+</html>

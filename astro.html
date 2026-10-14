@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ananta · Portal de Bienestar</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="stars"></div>
+
+<div class="wrap">
+
+<div style="position:absolute;top:15px;right:15px;z-index:100;">
+  <select id="tenant-selector" onchange="setTenant(this.value)" style="background:var(--bg);color:var(--text2);border:0.5px solid var(--border);border-radius:10px;padding:6px 10px;font-family:'Cormorant Garamond',serif;font-size:13px;cursor:pointer;outline:none;">
+    <option value="ananta">✧ Ananta (Púrpura)</option>
+    <option value="zenith">✧ Zenith (Esmeralda)</option>
+    <option value="lumina">✧ Lumina (Azul)</option>
+  </select>
+</div>
+
+<!-- ════════════════ YOGA ASTROLÓGICO ════════════════ -->
+<div id="screen-astro" class="screen active">
+  <button class="back-btn" onclick="goTo('home')">← Inicio</button>
+  <div class="card">
+    <span class="section-lbl">Tu signo solar</span>
+    <div class="astro-grid" id="astro-signs"></div>
+  </div>
+  <div class="card">
+    <span class="section-lbl">Planeta activo</span>
+    <div class="astro-grid-5" id="astro-planets"></div>
+  </div>
+  <div class="card">
+    <span class="section-lbl">Casa astrológica</span>
+    <div class="astro-grid-4" id="astro-houses"></div>
+  </div>
+  <div class="card">
+    <span class="section-lbl">Duración</span>
+    <div class="sel-grid" id="astro-dur">
+      <span class="sel-chip" data-g="adur" data-v="15">15 min</span>
+      <span class="sel-chip sel" data-g="adur" data-v="20">20 min</span>
+      <span class="sel-chip" data-g="adur" data-v="30">30 min</span>
+      <span class="sel-chip" data-g="adur" data-v="60">60 min</span>
+    </div>
+  </div>
+  <div class="card">
+    <span class="section-lbl" id="yoga-dolor-lbl">Zona de Dolor / Lesión</span>
+    <div class="sel-grid" id="yoga-dolor">
+      <span class="sel-chip sel" data-g="dolor" data-v="ninguna">Ninguna</span>
+      <span class="sel-chip" data-g="dolor" data-v="cuello">Cuello</span>
+      <span class="sel-chip" data-g="dolor" data-v="lumbares">Lumbares</span>
+      <span class="sel-chip" data-g="dolor" data-v="rodillas">Rodillas</span>
+      <span class="sel-chip" data-g="dolor" data-v="hombros">Hombros</span>
+      <span class="sel-chip" data-g="dolor" data-v="munecas">Muñecas</span>
+    </div>
+  </div>
+  <div class="card">
+    <span class="section-lbl">¿Sientes algún bloqueo emocional o físico hoy?</span>
+    <textarea id="astro-bloqueo" class="input-text" placeholder="Ej. Siento mucha tensión en la espalda baja, y estoy estresado por el trabajo..." style="width: 100%; height: 80px; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-family: inherit; margin-top: 10px; outline: none; resize: none; box-sizing: border-box;"></textarea>
+  </div>
+  <button class="btn-main" id="astro-gen-btn" onclick="generateAstro()">✦ Generar mi secuencia cósmica ✦</button>
+
+  <div class="loading-screen" id="astro-loading">
+    <span class="luna-anim">☽</span>
+    <div class="loading-txt">Leyendo los astros...</div>
+  </div>
+  <div id="astro-error"></div>
+</div>
+
+  <div style="margin-top: 2rem; margin-bottom: 2rem; text-align: center;">
+    <button class="btn-secondary" onclick="goTo('premium')">✧ Ver planes premium ✧</button>
+  </div>
+</div><!-- /wrap -->
+
+<!-- ════ BOTTOM NAV ════ -->
+<nav class="bottom-nav">
+  <div class="nav-item" id="nav-home" onclick="goTo('home')">
+    <span class="nav-icon">☽</span>
+    <span class="nav-lbl">Inicio</span>
+  </div>
+  <div class="nav-item" id="nav-yoga" onclick="goTo('yoga')">
+    <span class="nav-icon">🧘</span>
+    <span class="nav-lbl">Yoga</span>
+  </div>
+  <div class="nav-item" id="nav-astro" onclick="goTo('astro')">
+    <span class="nav-icon">✨</span>
+    <span class="nav-lbl">Astrológico</span>
+  </div>
+  <div class="nav-item" id="nav-oracle" onclick="goTo('oracle')">
+    <span class="nav-icon">🔮</span>
+    <span class="nav-lbl">Oráculo</span>
+  </div>
+  <div class="nav-item" id="nav-breath" onclick="goTo('breath')">
+    <span class="nav-icon">🌬️</span>
+    <span class="nav-lbl">Breath</span>
+  </div>
+</nav>
+
+<script src="script.js"></script>
+</body>
+</html>
