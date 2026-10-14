@@ -263,15 +263,34 @@ function buildAstroSelectors(){
 }
 buildAstroSelectors();
 
-/* ══ GEMINI API (GOOGLE AI STUDIO) ══ */
-// La clave se solicita en tiempo de ejecución y se guarda en el localStorage del navegador
-const GEMINI_API_KEY = ''; 
-
+/* ══ GEMINI API (CONEXIÓN SEGURA VERCEL + RESPALDO) ══ */
 async function callGemini(prompt, retry=true){
-  // Intenta usar la llave de arriba primero, si no, usa el localStorage
-  let apiKey = GEMINI_API_KEY || localStorage.getItem('gemini_api_key');
+  // 1. En Vercel: intentar llamar a la función serverless segura (/api/gemini)
+  if (window.location.protocol.startsWith('http')) {
+    try {
+      const vRes = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+      });
+      if (vRes.ok) {
+        const vData = await vRes.json();
+        if (vData.result) return vData.result;
+      } else if (vRes.status !== 404) {
+        const vData = await vRes.json().catch(() => ({}));
+        if (vData.error) throw new Error(vData.error);
+      }
+    } catch (err) {
+      if (err.message && !err.message.includes('Failed to fetch') && !err.message.includes('404')) {
+        throw err;
+      }
+    }
+  }
+
+  // 2. Respaldo local: si se ejecuta abriendo el archivo HTML directamente (file://)
+  let apiKey = localStorage.getItem('gemini_api_key');
   if (!apiKey) {
-    apiKey = window.prompt("Para generar secuencias reales, ingresa tu API Key de Google AI Studio (Gemini).\nEsta llave solo se guardará temporalmente en tu navegador:");
+    apiKey = window.prompt("Para generar secuencias en local, ingresa tu API Key de Google AI Studio (Gemini).\nEn Vercel esto se realiza automáticamente sin pedir clave:");
     if (!apiKey) throw new Error("API Key requerida para conectar con la inteligencia artificial.");
     localStorage.setItem('gemini_api_key', apiKey.trim());
   }
@@ -289,7 +308,7 @@ async function callGemini(prompt, retry=true){
   let res=await fetch(url, payload);
   let data=await res.json();
   
-  // 💡 Sistema de Respaldo: Si los servidores principales están saturados, intenta con Gemini 2.0
+  // Respaldo con Gemini 2.0 si 2.5 está saturado
   if (data.error && data.error.message && data.error.message.includes('high demand') && retry) {
     console.warn("Gemini 2.5 saturado. Intentando con Gemini 2.0 de respaldo...");
     url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
@@ -298,7 +317,7 @@ async function callGemini(prompt, retry=true){
   }
   if(data.error) {
     if(data.error.code === 400 || data.error.code === 403) {
-      localStorage.removeItem('gemini_api_key'); // Borrar si era inválida
+      localStorage.removeItem('gemini_api_key');
       throw new Error("La API Key es inválida. Recarga la página e intenta de nuevo.");
     }
     throw new Error("Error de API: " + data.error.message);
@@ -311,7 +330,6 @@ async function callGemini(prompt, retry=true){
   
   let textContent = data.candidates[0].content.parts[0].text;
   
-  // Extraer solo la parte JSON por precaución
   const start = textContent.indexOf('{');
   const end = textContent.lastIndexOf('}');
   if (start !== -1 && end !== -1) {
